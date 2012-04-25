@@ -159,11 +159,11 @@ class Post:
         fname = self.post.get('wp_slug') or Post.slugify(self.post['title']) or str(self.post['postid'])
         created = str(self.post['dateCreated'])
         if 'page_id' in self.post:
-            return os.path.join('pages', fname)
+            return os.path.join('pages', Post.slugify(self.post['wp_page_parent_title']), fname + ".page")
         elif self.post.get('post_status', 'draft') == 'draft':
-            return os.path.join('draft', fname)
+            return os.path.join('draft', fname + ".post")
         else:
-            return os.path.join(created[0:4], created[4:6], fname)
+            return os.path.join(created[0:4], created[4:6], fname + ".post")
 
     def id(self):
         return int(self.post.get('postid', 0)) or int(self.post.get('page_id', 0))
